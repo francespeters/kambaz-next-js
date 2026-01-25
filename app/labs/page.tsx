@@ -9,7 +9,7 @@ export default function labs() {
            Lab 1: HTML Examples </Link>
        </li>
        <li>
-         <Link href="/labs/lab2" id="wd-lab2-link">
+         <Link href="/labs/latyb2" id="wd-lab2-link">
            Lab 2: CSS Basics </Link>
        </li>
        <li>
@@ -20,5 +20,6 @@ export default function labs() {
        <Link href="/" id="wd-kambaz-link">
          Kambaz </Link> </li>
      </ul>
+     <p> Frances Peters</p>
    </div>
 );}
