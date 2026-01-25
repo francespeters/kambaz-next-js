@@ -97,6 +97,19 @@ export default function Dashboard() {
             </Link>
         </div>
 
+        <div className="wd-dashboard-course">
+            <Link href="/courses/1234" className="wd-dashboard-course-link">
+            <Image src="/images/HCI.jpg" width={200} height={150} alt="reactjs" />
+            <div>
+            <h5> CS2400 HCI </h5>
+            <p className="wd-dashboard-course-title">
+                Human Computer Interaction
+            </p>
+            <button> Go </button>
+            </div>
+            </Link>
+        </div>
+
 
    </div>
   </div>
