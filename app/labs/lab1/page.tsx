@@ -184,10 +184,7 @@ export default function Lab1() {
                         id="wd-text-fields-email"/><br/>
 
                     <label htmlFor="wd-text-fields-salary-start"> Starting salary:</label>
-                    <input type="number"
-                        defaultValue="100000"
-                        placeholder="1000"
-                        id="wd-text-fields-salary-start"/><br/>
+                    <input type="number" defaultValue="100000" placeholder="1000" id="wd-text-fields-salary-start"/><br/>
 
                     <label htmlFor="wd-text-fields-rating"> Rating: </label>
                     <input type="range"
@@ -206,8 +203,7 @@ export default function Lab1() {
         <h5 id="wd-radio-buttons">Radio buttons</h5>
             <label>Favorite movie genre:</label><br />
 
-            <input type="radio" name="radio-genre" id="wd-radio-comedy"/>
-            <label htmlFor="wd-radio-comedy">Comedy</label><br />
+            <input type="radio" name="radio-genre" id="wd-radio-comedy"/><label htmlFor="wd-radio-comedy">Comedy</label><br />
 
             <input type="radio" name="radio-genre" id="wd-radio-drama"/>
             <label htmlFor="wd-radio-drama">Drama</label><br />
