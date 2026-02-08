@@ -20,6 +20,6 @@ export default function labs() {
        <Link href="/" id="wd-kambaz-link">
          Kambaz </Link> </li>
      </ul>
-     <p> Frances Peters</p>
+     <p> Frances Peters (Section 02)</p>
    </div>
 );}

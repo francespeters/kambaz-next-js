@@ -1,121 +1,131 @@
+import { Button, Col, FormSelect } from "react-bootstrap";
+import Form from "react-bootstrap/esm/Form";
+import FormCheck from "react-bootstrap/esm/FormCheck";
+
+import FormControl from "react-bootstrap/esm/FormControl";
+import FormLabel from "react-bootstrap/esm/FormLabel";
+import Row from "react-bootstrap/esm/Row";
+
 export default function AssignmentEditor() {
   return (
     <div id="wd-assignments-editor">
-      <label htmlFor="wd-name">Assignment Name</label> <br />
-      <input id="wd-name" defaultValue="A1 - HTML" /><br /><br />
-      <textarea id="wd-description"> The assignment is available online Submit a link to the landing page of </textarea>
-      <br />
-        <table>
-            <tr>
-                <td align="right" valign="top">
-                <label htmlFor="wd-points">Points</label>
-            </td>
-            <td>
-                <input id="wd-points" defaultValue={100} />
-            </td>
-            </tr>
-            <tr>
-                <td align="right" valign="top">
-                <label  htmlFor="wd-select-one-group"> Assignment group </label>
-                </td>
-                <td>
-                    <select id="wd-select-one-group">
-                        <option selected value="ASSIGNMENTS">ASSIGNMENTS</option>
-                        <option value="QUIZZES">QUIZZES</option>
-                        <option value="EXAMS">EXAMS</option>
-                    </select>
-                </td>
-            </tr>
+                <Form>
+                    <Row className="mb-3" >
+                        <Col>
 
-            <tr>
-                <td align="right" valign="top">
-                <label  htmlFor="wd-select-one-display">Display grade as </label>
-                </td>
-                <td>
-                    <select id="wd-select-one-display">
-                        <option selected value="PERCENTAGE">PERCENTAGE</option>
-                        <option value="FRACTION">FRACTION</option>
-                        <option value="LETTER">LETTER</option>
-                    </select>
-                </td>
-            </tr>
+                            <FormLabel> Assignment Name </FormLabel>
+                            <FormControl type="text" defaultValue="A1" placeholder="Assignment name"/> 
+            
+                        </Col>  
+                        
+                    </Row>
 
-            <tr>
-                <td align="right" valign="top">
-                    <label  htmlFor="wd-select-one-sub">Submission type </label>
-                </td>    
+                    <Row className="mb-3" >
+                        <Col>
+                        <FormControl as="textarea" style={{ height: "100px" }} placeholder="Assignment description" defaultValue="This is the assignment description." />
+                            </Col>
+                    </Row>
+
+                    <div id ="wd-assignment-offset-section">
+                        <Row className="mb-3">
+                            <Col sm={3}>                            
+                                <FormLabel> Points </FormLabel>
+                            </Col>
+                            <Col sm={9}> 
+                                <FormControl type="number" defaultValue="100" /> 
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col sm={3}>
+                                <FormLabel> Assignment Group </FormLabel>
+                            </Col>
+                            
+                            <Col sm={9}>
+                                <FormSelect>
+                                    <option value="1" defaultChecked>ASSIGNMENTS</option>
+                                    <option value="2">QUIZZES</option>
+                                    <option value="3">PROJECTS</option>
+                                </FormSelect>
+                            </Col>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Col sm={3}>                            
+                                <FormLabel> Display Grade as</FormLabel>
+                            </Col>
+                            <Col>
+                                <FormSelect>
+                                <option value="1" defaultChecked> Percentage</option>
+                                <option value="2">Letter Grade</option>
+                                <option value="3">Points</option>
+                                </FormSelect>
+                            </Col>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Col sm={3}>                            
+                                <FormLabel column sm={2} > Submission Type </FormLabel>
+                            </Col>
+                            <Col sm={9} className="border border-1 rounded p-3">
+                                <FormSelect>
+                                <option value="1" defaultChecked>Online</option>
+                                <option value="2">In-person</option>
+                                </FormSelect>
+                                <p className="mt-3"> <strong>Online Entry Options</strong></p>
+                                <FormCheck type="checkbox" label="Text Entry" name="online-entry-options" id="wd-chkbox-text-entry"/>
+                                <FormCheck type="checkbox" label="Website URL" name="online-entry-options" id="wd-chkbox-web" defaultChecked/>
+                                <FormCheck type="checkbox" label="Media Recordings" name="online-entry-options" id="wd-chkbox-rec"/>
+                                <FormCheck type="checkbox" label="Student Annotation" name="online-entry-options" id="wd-chkbox-anno"/>
+                                <FormCheck type="checkbox" label="File Uploads" name="online-entry-options" id="wd-chkbox-file"/>
+                            </Col>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Col sm={3}>
+                                <FormLabel > Assign </FormLabel>
+                            </Col>
+                            
+                            <Col className="border border-1 rounded p-3" sm={9}>
+                                <Row>
+                                   <Col>
+                                    <FormLabel className="fw-bold">Assign to</FormLabel>
+                                    <FormControl type="text" defaultValue="Everyone" />
+                                    </Col> 
+                                </Row>
+                                
+                                
+                                <Row className="mt-3">
+                                    <Col >
+                                        <FormLabel className="fw-bold">Due</FormLabel>
+                                        <FormControl type="date" defaultValue="2024-01-21" /> 
+                                    </Col> 
+                                </Row>
+
+                                <Row className="mt-3">
+                                    <Col sm={6}>
+                                        <FormLabel className="fw-bold">Available from</FormLabel>
+                                        <FormControl type="date" defaultValue="2024-01-21" />                                 
+                                    </Col>
+
+                                    <Col sm={6}>
+                                        <FormLabel className="fw-bold">Until</FormLabel>
+                                        <FormControl type="date" defaultValue="2024-01-21" />
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+
+                    </div>  
+                </Form>
+                <hr/>
+                <div className="d-flex gap-2 float-end"> 
+                    <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-view-progress-btn">
+                        Cancel </Button>
                 
-                <td>
-                        <tr> 
-                            <select id="wd-select-one-sub">
-                                <option selected value="ONLINE">ONLINE</option>
-                                <option value="IN-PERSON">IN-PERSON</option>
-                            </select> 
-                        </tr>    
-                    
-                        <tr> 
-                            <label>Online Entry Options</label><br/>
+                        <Button variant="secondary" size="lg" className="border-0 bg-danger me-1 float-end text-white" id="wd-collapse-all-btn">
+                             Save </Button>
+                                
+                </div> 
 
-                            <input type="checkbox" name="check-genre" id="wd-chkbox-Text-Entry"/>
-                            <label htmlFor="wd-chkbox-Text-Entry">Text Entry</label><br/>
-
-                            <input type="checkbox" name="check-genre" id="wd-chkbox-web"/>
-                            <label htmlFor="wd-chkbox-web">Website URL</label><br/>
-
-                            <input type="checkbox" name="check-genre" id="wd-chkbox-rec"/>
-                            <label htmlFor="wd-chkbox-rec">Media Recordings</label><br/>
-
-                            <input type="checkbox" name="check-genre" id="wd-chkbox-anno"/>
-                            <label htmlFor="wd-chkbox-anno">Student Annotation</label><br/>
-
-                            <input type="checkbox" name="check-genre" id="wd-chkbox-file"/>
-                            <label htmlFor="wd-chkbox-file">File Uploads</label>
-                        </tr>
-
-                    
-                </td>
-            </tr>
-
-            <tr>
-                <td align="right" valign="top">
-                    <label  htmlFor="wd-select-one-assign">Assign </label>
-                </td>
-
-                <label> Assign to</label>
-                <tr>
-                    <input id="wd-points" defaultValue={"Everyone"} />
-                </tr>
-
-                <label> Due</label>
-                <tr>
-                    <input type="date"
-                            defaultValue="2000-01-21"
-                            id="wd-text-fields-due"/>
-                </tr>
-
-                <tr> 
-                    <label>Avalable from</label>
-                    <tr>
-                        <input type="date"
-                            defaultValue="2000-01-21"
-                            id="wd-text-fields-available-from"/>
-                    </tr>  
-                    <td> 
-                    <label>Until</label>
-                        <tr>
-                            <input type="date"
-                            defaultValue="2000-01-21"
-                            id="wd-text-fields-until"/>
-                        </tr> 
-                    </td>
-                </tr>
-
-            </tr>
-
-        </table>
-        <div id="wd-cancel-save"> 
-            <button>cancel</button>
-            <button>save</button>   
-        </div>
     </div>
 );}

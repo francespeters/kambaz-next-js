@@ -1,5 +1,7 @@
-import { ReactNode } from "react";
 import TOC from "./TOC";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { ReactNode } from "react";
+
 
 
 export default function LabsLayout({
