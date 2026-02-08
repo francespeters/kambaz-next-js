@@ -38,3 +38,16 @@ body * {
 }
 
 
+#wd-assignments-editor{
+  
+   max-width: 800px;
+   
+   
+
+}
+
+#wd-assignment-offset-section{
+  margin-left: auto;
+
+  width: 700px;
+}
