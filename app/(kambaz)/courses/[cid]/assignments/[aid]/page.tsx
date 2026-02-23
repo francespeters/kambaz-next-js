@@ -1,3 +1,8 @@
+"use client"
+
+import { assignments } from "@/app/(kambaz)/database";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Button, Col, FormSelect } from "react-bootstrap";
 import Form from "react-bootstrap/esm/Form";
 import FormCheck from "react-bootstrap/esm/FormCheck";
@@ -7,14 +12,17 @@ import FormLabel from "react-bootstrap/esm/FormLabel";
 import Row from "react-bootstrap/esm/Row";
 
 export default function AssignmentEditor() {
-  return (
+    const { cid, aid } = useParams();    
+    const assignment = assignments.find(a => a._id === aid);
+
+    return (
     <div id="wd-assignments-editor">
                 <Form>
                     <Row className="mb-3" >
                         <Col>
 
                             <FormLabel> Assignment Name </FormLabel>
-                            <FormControl type="text" defaultValue="A1" placeholder="Assignment name"/> 
+                            <FormControl type="text" defaultValue={assignment?.title} placeholder="Assignment name"/> 
             
                         </Col>  
                         
@@ -22,7 +30,7 @@ export default function AssignmentEditor() {
 
                     <Row className="mb-3" >
                         <Col>
-                        <FormControl as="textarea" style={{ height: "100px" }} placeholder="Assignment description" defaultValue="This is the assignment description." />
+                        <FormControl as="textarea" style={{ height: "100px" }} placeholder="Assignment description" defaultValue={assignment?.description} />
                             </Col>
                     </Row>
 
@@ -32,7 +40,7 @@ export default function AssignmentEditor() {
                                 <FormLabel> Points </FormLabel>
                             </Col>
                             <Col sm={9}> 
-                                <FormControl type="number" defaultValue="100" /> 
+                                <FormControl type="number" defaultValue={assignment?.points} /> 
                             </Col>
                         </Row>
                         <Row className="mb-3">
@@ -97,19 +105,19 @@ export default function AssignmentEditor() {
                                 <Row className="mt-3">
                                     <Col >
                                         <FormLabel className="fw-bold">Due</FormLabel>
-                                        <FormControl type="date" defaultValue="2024-01-21" /> 
+                                        <FormControl type="date" defaultValue={assignment?.dueDate} /> 
                                     </Col> 
                                 </Row>
 
                                 <Row className="mt-3">
                                     <Col sm={6}>
                                         <FormLabel className="fw-bold">Available from</FormLabel>
-                                        <FormControl type="date" defaultValue="2024-01-21" />                                 
+                                        <FormControl type="date" defaultValue={assignment?.availableFrom} />                                 
                                     </Col>
 
                                     <Col sm={6}>
                                         <FormLabel className="fw-bold">Until</FormLabel>
-                                        <FormControl type="date" defaultValue="2024-01-21" />
+                                        <FormControl type="date" defaultValue={assignment?.availableUntil} />
                                     </Col>
                                 </Row>
                             </Col>
@@ -119,11 +127,18 @@ export default function AssignmentEditor() {
                 </Form>
                 <hr/>
                 <div className="d-flex gap-2 float-end"> 
-                    <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-view-progress-btn">
-                        Cancel </Button>
+                    <Link href={`/courses/${cid}/assignments`}>
+                        <Button variant="secondary" size="lg">
+                            Cancel
+                        </Button>
+                    </Link>
+                    <Link href={`/courses/${cid}/assignments`}>
+                        <Button size="lg" className="border-0 bg-danger text-white">
+                            Save
+                        </Button>
+                    </Link>
                 
-                        <Button variant="secondary" size="lg" className="border-0 bg-danger me-1 float-end text-white" id="wd-collapse-all-btn">
-                             Save </Button>
+                    
                                 
                 </div> 
 
