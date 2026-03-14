@@ -38,7 +38,11 @@ export default function Lab2() {
 
       <Link href="lab4/redux">Redux Examples</Link>
       <HelloRedux/>
-      
+        <Link href="./lab4/react-context">React Context Examples</Link>
+             <Link href="./lab4/zustand">Zustand Examples</Link>
+
+
+
 
 
 

@@ -1,15 +1,17 @@
 import { Button, ListGroupItem } from "react-bootstrap";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo, setTodo } from "./todosReducer";
-import { todo } from "node:test";
+import { RootState } from "../../store";
 
 export default function TodoItem(): {
   todo: { id: string; title: string };
   deleteTodo: (id: string) => void;
   setTodo: (todo: { id: string; title: string }) => void;
-}) {
-      const dispatch = useDispatch();
+} {
+      const { todo } = useSelector((state: RootState) => state.todosReducer);
+
+    const dispatch = useDispatch();
   return (
     
     <ListGroupItem key={todo.id}>

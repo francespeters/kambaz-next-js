@@ -1,9 +1,13 @@
 "use client";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function AccountNavigation() {
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+    const links = currentUser ? ["profile"] : ["signin", "signup"];
     const pathname = usePathname();
  return (
    <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0 pe-4">
