@@ -10,10 +10,9 @@ import { enroll, unenroll } from "../courses/enrollments/reducer";
 import { v4 as uuidv4 } from "uuid";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addNewCourse, deleteCourse, updateCourse, setCourses } from "../courses/reducer";
+import { addNewCourse, deleteCourse, updateCourse, } from "../courses/reducer";
 
 import Link from "next/link";
-import Image from "next/image";
 import Card from "react-bootstrap/esm/Card";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
