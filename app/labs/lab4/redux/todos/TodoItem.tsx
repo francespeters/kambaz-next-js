@@ -4,15 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo, setTodo } from "./todosReducer";
 import { RootState } from "../../store";
 
-export default function TodoItem(): {
-  todo: { id: string; title: string };
-  deleteTodo: (id: string) => void;
-  setTodo: (todo: { id: string; title: string }) => void;
-} {
-      const { todo } = useSelector((state: RootState) => state.todosReducer);
+type Todo = { id: string; title: string };
+
+export default function TodoItem({ todo }: { todo: Todo }) {
 
     const dispatch = useDispatch();
-  return (
+    return (
     
     <ListGroupItem key={todo.id}>
 

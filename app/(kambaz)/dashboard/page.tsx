@@ -3,6 +3,8 @@ import * as db from "../database";
 import { RootState } from "../store";
 
 import { useState } from "react";
+import { enroll, unenroll } from "../courses/enrollments/reducer";
+
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -88,7 +90,7 @@ export default function Dashboard() {
         
       </h5><hr /><br />
       <FormControl value={course.name} className="mb-2" onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
-      <FormControl value={course.description} rows={3} onChange={(e) => setCourse({ ...course, description: e.target.value }) } />
+      <FormControl as="textarea" value={course.description} rows={3} onChange={(e) => setCourse({ ...course, description: e.target.value }) } />
 
 
     <h2 id="wd-dashboard-published">Published Courses (12)</h2> <hr />
@@ -109,21 +111,32 @@ export default function Dashboard() {
                         {course.description} </CardText>
 
                         <Button variant="primary"> Go </Button>
-                        {isEnrolled ? (
-                            <Button
+                        
+                        {currentUser && (
+                            isEnrolled ? (
+                                <Button
                                 className="btn btn-danger"
-                                onClick={() => dispatch(unenroll({ userId: currentUser._id, courseId: course._id }))}
-                            >
+                                onClick={() =>
+                                    dispatch(
+                                    unenroll({ userId: currentUser._id, courseId: course._id })
+                                    )
+                                }
+                                >
                                 Unenroll
-                            </Button>
+                                </Button>
                             ) : (
-                            <Button
+                                <Button
                                 className="btn btn-success"
-                                onClick={() => dispatch(enroll({ userId: currentUser._id, courseId: course._id }))}
-                            >
+                                onClick={() =>
+                                    dispatch(
+                                    enroll({ userId: currentUser._id, courseId: course._id })
+                                    )
+                                }
+                                >
                                 Enroll
-                            </Button>
-                            )}
+                                </Button>
+                            )
+                        )}
 
                         {isAdmin && (
                         <button onClick={(event) => {
