@@ -22,13 +22,22 @@ import Button from "react-bootstrap/esm/Button";
 import { FormControl } from "react-bootstrap";
 export default function Dashboard() {
     const { courses } = useSelector((state: RootState) => state.coursesReducer);
-    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
 
     const { enrollments } = useSelector(
     (state: RootState) => state.enrollmentsReducer
     );    
     const [showAll, setShowAll] = useState(false); //for enrollments
 
+    type User = {
+        _id: string;
+        username: string;
+        role: string;
+    
+    };
+
+    const currentUser = useSelector(
+    (state: RootState) => state.accountReducer.currentUser
+    ) as User | null;
     const isAdmin = currentUser?.role === "FACULTY";
 
 

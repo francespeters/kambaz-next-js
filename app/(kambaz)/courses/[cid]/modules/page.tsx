@@ -36,6 +36,7 @@ export default function Modules() {
     name: string;
     course: string;
     lessons?: Lesson[];
+    editing?: boolean;
     };
 
     return (
