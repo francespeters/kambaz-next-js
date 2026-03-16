@@ -1,8 +1,10 @@
 "use client";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-
-export default function QueryCalculator() {
+//build error so added suspense boundary 
+//⨯ useSearchParams() should be wrapped in a suspense boundary at page "/labs/lab4/url-encoding/query-params". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+function QueryCalculatorInner() {
  const searchParams = useSearchParams();
 
 
@@ -16,6 +18,7 @@ export default function QueryCalculator() {
 
 
  return (
+    
    <div style={{ padding: 40 }}>
      <h1>Calculator – Query Parameters</h1>
 
@@ -32,4 +35,12 @@ export default function QueryCalculator() {
      <h2 style={{ color: "green" }}>Sum = {sum}</h2>
    </div>
  );
+}
+
+export default function QueryCalculator() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <QueryCalculatorInner />
+    </Suspense>
+  );
 }
