@@ -33,6 +33,18 @@ body * {
 .list-group-item {
   --bs-list-group-border-color: gray;
 }
+
+#wd-account-navigation .nav-link.active.wd-account-nav-active {
+  background-color: transparent !important;
+  color: red !important;
+  text-decoration: underline;
+}
+
+#wd-account-navigation .nav-link {
+  background-color: transparent !important;
+  color: black !important;
+}
+
 .wd-lesson {
   border-left: 3px solid green !important;
 }

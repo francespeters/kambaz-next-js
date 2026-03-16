@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { assignments } from "@/app/(kambaz)/database";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { RootState } from "@/app/(kambaz)/store";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button, Col, FormSelect } from "react-bootstrap";
 import Form from "react-bootstrap/esm/Form";
 import FormCheck from "react-bootstrap/esm/FormCheck";
@@ -10,10 +12,71 @@ import FormCheck from "react-bootstrap/esm/FormCheck";
 import FormControl from "react-bootstrap/esm/FormControl";
 import FormLabel from "react-bootstrap/esm/FormLabel";
 import Row from "react-bootstrap/esm/Row";
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment, updateAssignment } from "../reducer";
+
+
+type Assignment = {
+  _id: string;
+  title: string;
+  course: string;
+  description?: string;
+  points?: number | string;
+  dueDate?: string;
+  availableFrom?: string;
+  availableUntil?: string;
+};
 
 export default function AssignmentEditor() {
-    const { cid, aid } = useParams();    
-    const assignment = assignments.find(a => a._id === aid);
+    const { cid, aid } = useParams<{ cid: string; aid: string }>();    
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+
+    const isNew = aid === "new"; //check if new
+    const existing = assignments.find((a: any) => a._id === aid);
+
+    const [assignment, setAssignment] = useState<Partial<Assignment>>({
+        title: "",
+        description: "",
+        points: 100,
+        dueDate: "",
+        availableFrom: "",
+        availableUntil: "",
+    });
+
+    useEffect(() => {
+    if (!isNew && existing) {
+      setAssignment(existing);
+    }
+    }, [isNew, existing]);
+
+    const onSave = () => {
+        const payload: any = {
+        ...assignment,
+        course: cid,
+        title: assignment.title ?? "",
+        description: assignment.description ?? "",
+        points: assignment.points ?? 0,
+        dueDate: assignment.dueDate ?? "",
+        availableFrom: assignment.availableFrom ?? "",
+        availableUntil: assignment.availableUntil ?? "",
+        };
+
+        if (isNew) {
+            dispatch(addAssignment(payload));
+        } else {
+            dispatch(updateAssignment({ ...payload, _id: aid }));
+        }
+        router.push(`/courses/${cid}/assignments`);
+    };
+
+    const onCancel = () => {
+      router.push(`/courses/${cid}/assignments`);
+    };
+
+
 
     return (
     <div id="wd-assignments-editor">
@@ -22,7 +85,9 @@ export default function AssignmentEditor() {
                         <Col>
 
                             <FormLabel> Assignment Name </FormLabel>
-                            <FormControl type="text" defaultValue={assignment?.title} placeholder="Assignment name"/> 
+                            <FormControl type="text" value={assignment.title ?? ""} placeholder="Assignment name"
+                                onChange={(e) => setAssignment((a) => ({ ...a, title: e.target.value }))}
+                            /> 
             
                         </Col>  
                         
@@ -30,7 +95,9 @@ export default function AssignmentEditor() {
 
                     <Row className="mb-3" >
                         <Col>
-                        <FormControl as="textarea" style={{ height: "100px" }} placeholder="Assignment description" defaultValue={assignment?.description} />
+                        <FormControl as="textarea" style={{ height: "100px" }} placeholder="Assignment description" value={assignment.description ?? ""} 
+                            onChange={(e) => setAssignment((a) => ({ ...a, description: e.target.value }))}
+                        />
                             </Col>
                     </Row>
 
@@ -40,7 +107,9 @@ export default function AssignmentEditor() {
                                 <FormLabel> Points </FormLabel>
                             </Col>
                             <Col sm={9}> 
-                                <FormControl type="number" defaultValue={assignment?.points} /> 
+                                <FormControl type="number" value={assignment.points ?? 0} 
+                                    onChange={(e) => setAssignment((a) => ({ ...a, points: parseInt(e.target.value) || 0 }))}
+                                /> 
                             </Col>
                         </Row>
                         <Row className="mb-3">
@@ -105,19 +174,31 @@ export default function AssignmentEditor() {
                                 <Row className="mt-3">
                                     <Col >
                                         <FormLabel className="fw-bold">Due</FormLabel>
-                                        <FormControl type="date" defaultValue={assignment?.dueDate} /> 
+                                        <FormControl
+                                            type="date"
+                                            value={assignment.dueDate ?? ""}
+                                            onChange={(e) => setAssignment((a) => ({ ...a, dueDate: e.target.value }))}
+                                        />                                    
                                     </Col> 
                                 </Row>
 
                                 <Row className="mt-3">
                                     <Col sm={6}>
                                         <FormLabel className="fw-bold">Available from</FormLabel>
-                                        <FormControl type="date" defaultValue={assignment?.availableFrom} />                                 
+                                        <FormControl
+                                            type="date"
+                                            value={assignment.availableFrom ?? ""}
+                                            onChange={(e) => setAssignment((a) => ({ ...a, availableFrom: e.target.value }))}
+                                        />                               
                                     </Col>
 
                                     <Col sm={6}>
                                         <FormLabel className="fw-bold">Until</FormLabel>
-                                        <FormControl type="date" defaultValue={assignment?.availableUntil} />
+                                        <FormControl
+                                            type="date"
+                                            value={assignment.availableUntil ?? ""}
+                                            onChange={(e) => setAssignment((a) => ({ ...a, availableUntil: e.target.value }))}
+                                        />
                                     </Col>
                                 </Row>
                             </Col>
@@ -127,16 +208,12 @@ export default function AssignmentEditor() {
                 </Form>
                 <hr/>
                 <div className="d-flex gap-2 float-end"> 
-                    <Link href={`/courses/${cid}/assignments`}>
-                        <Button variant="secondary" size="lg">
-                            Cancel
-                        </Button>
-                    </Link>
-                    <Link href={`/courses/${cid}/assignments`}>
-                        <Button size="lg" className="border-0 bg-danger text-white">
-                            Save
-                        </Button>
-                    </Link>
+                    <Button variant="secondary" size="lg" onClick={onCancel}>
+                        Cancel
+                    </Button>
+                    <Button size="lg" className="border-0 bg-danger text-white" onClick={onSave}>
+                        Save
+                    </Button>
                 
                     
                                 
