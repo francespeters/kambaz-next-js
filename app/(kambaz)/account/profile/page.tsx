@@ -20,8 +20,9 @@ export default function Profile(){
        dispatch(setCurrentUser(null));
        redirect("/account/signin");
        };
+
        useEffect(() => {
-       fetchProfile();
+              fetchProfile();
        }, []);
 
   return (
