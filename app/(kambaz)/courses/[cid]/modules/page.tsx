@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-assign-module-variable */
 "use client"
 import * as client from "../../client";
 
@@ -17,7 +19,11 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import { FormControl } from "react-bootstrap";
 
 export default function Modules() {
-    const { cid } = useParams();
+    const params = useParams();
+    const cid =
+        typeof params.cid === "string"
+            ? params.cid
+            : params.cid?.[0];
     const [moduleName, setModuleName] = useState("");
     const { modules } = useSelector((state: RootState) => state.modulesReducer);
     const dispatch = useDispatch();
@@ -40,8 +46,9 @@ export default function Modules() {
     };
 
     const fetchModules = async () => {
-        const modules = await client.findModulesForCourse(cid as string);
-        dispatch(setModules(modules));
+        if (!cid) return;
+        const list = await client.findModulesForCourse(cid);
+        dispatch(setModules(list));
     };
     useEffect(() => {
         fetchModules();
