@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-
+import * as assignmentsClient from "../../assignmentsClient";
 import Link from "next/link"
 import ListGroup from "react-bootstrap/esm/ListGroup";
 import ListGroupItem from "react-bootstrap/esm/ListGroupItem";
@@ -10,12 +11,12 @@ import AssignmentSubControls from "./AssignmentSubControls";
 import AssignmentSearch from "./AssignmentSearch";
 import { useParams } from "next/navigation";
 
-import { editAssignment as editAssignmentAction, updateAssignment as updateAssignmentAction, deleteAssignment as deleteAssignmentAction }
-  from "./reducer";
+import { editAssignment, setAssignments } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
 
 import AssignmentStartControls from "./AssignmentStartControls";
+import { useEffect, useState } from "react";
 
 
 /**
@@ -26,6 +27,23 @@ export default function Assignments() {
     const { cid } = useParams();
     const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
     const dispatch = useDispatch();
+
+    
+
+    const onRemoveAssignment = async (assignmentId: string) => {
+        await assignmentsClient.deleteAssignment(assignmentId);
+        dispatch(setAssignments(assignments.filter((a: any) => a._id !== assignmentId)));
+      };
+
+    
+
+    const fetchAssignments = async () => {
+            const list = await assignmentsClient.findAssignmentsForCourse(cid as string);
+            dispatch(setAssignments(list));
+        };
+        useEffect(() => {
+            fetchAssignments();
+        }, [cid]);
 
     type Assignment = {
        _id: string;
@@ -49,15 +67,15 @@ export default function Assignments() {
         </div>
 
       <ListGroup className="rounded-0" id="wd-modules">
-        {assignments.filter((assignment: Assignment) => assignment.course === cid )
+        {assignments
         .map((assignment: Assignment) => (
           <ListGroupItem key={assignment._id} className="wd-lesson d-flex p-3 ps-1 align-items-center">
             
             <Link href={`/courses/${cid}/assignments/${assignment._id}`} className="text-decoration-none text-dark">
               <AssignmentStartControls 
               assignmentid={assignment._id}
-              deleteAssignment={() => dispatch(deleteAssignmentAction(assignment._id))}
-              editAssignment={() => dispatch(editAssignmentAction(assignment._id))}
+              deleteAssignment={(assignmentId) => onRemoveAssignment(assignmentId)}
+              editAssignment={() => dispatch(editAssignment(assignment._id))}
               />
             </Link>  
 
@@ -81,8 +99,8 @@ export default function Assignments() {
             </div>
             
             <AssignmentSubControls assignmentid={assignment._id} 
-              deleteAssignment={() => dispatch(deleteAssignmentAction(assignment._id))}
-              editAssignment={() => dispatch(editAssignmentAction(assignment._id))}
+              deleteAssignment={(id) => onRemoveAssignment(id)}
+              editAssignment={() => dispatch(editAssignment(assignment._id))}
             />
 
           </ListGroupItem>

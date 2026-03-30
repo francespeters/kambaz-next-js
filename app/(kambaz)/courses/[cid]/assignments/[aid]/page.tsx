@@ -2,6 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
+import * as assignmentsClient from "../../../assignmentsClient";
+
 import { RootState } from "@/app/(kambaz)/store";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,7 +15,7 @@ import FormControl from "react-bootstrap/esm/FormControl";
 import FormLabel from "react-bootstrap/esm/FormLabel";
 import Row from "react-bootstrap/esm/Row";
 import { useDispatch, useSelector } from "react-redux";
-import { addAssignment, updateAssignment } from "../reducer";
+import { setAssignments } from "../reducer";
 
 
 type Assignment = {
@@ -28,14 +30,8 @@ type Assignment = {
 };
 
 export default function AssignmentEditor() {
-    const { cid, aid } = useParams<{ cid: string; aid: string }>();    
-    const dispatch = useDispatch();
-    const router = useRouter();
-
+    const { cid, aid } = useParams<{ cid: string; aid: string }>();     
     const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
-
-    const isNew = aid === "new"; //check if new
-    const existing = assignments.find((a: any) => a._id === aid);
 
     const [assignment, setAssignment] = useState<Partial<Assignment>>({
         title: "",
@@ -46,30 +42,74 @@ export default function AssignmentEditor() {
         availableUntil: "",
     });
 
-    useEffect(() => {
-    if (!isNew && existing) {
-      setAssignment(existing);
-    }
-    }, [isNew, existing]);
+    const dispatch = useDispatch();
+    const router = useRouter();
 
-    const onSave = () => {
-        const payload: any = {
-        ...assignment,
-        course: cid,
-        title: assignment.title ?? "",
-        description: assignment.description ?? "",
-        points: assignment.points ?? 0,
-        dueDate: assignment.dueDate ?? "",
-        availableFrom: assignment.availableFrom ?? "",
-        availableUntil: assignment.availableUntil ?? "",
+    const isNew = aid === "new";
+
+    useEffect(() => {
+        if (!cid) return;
+        (async () => {
+            const list = await assignmentsClient.findAssignmentsForCourse(cid);
+            dispatch(setAssignments(list));
+        })();
+    }, [cid, dispatch]);
+
+    useEffect(() => {
+        if (isNew) {
+            setAssignment({
+                title: "",
+                description: "",
+                points: 100,
+                dueDate: "",
+                availableFrom: "",
+                availableUntil: "",
+            });
+            return;
+        }
+        if (!aid) return;
+        const found = assignments.find((a: any) => a._id === aid);
+        if (found) {
+            setAssignment(found);
+        }
+    }, [isNew, aid, assignments]);
+
+    const onSave = async () => {
+        if (!cid) return;
+        const body = {
+            title: assignment.title ?? "",
+            description: assignment.description ?? "",
+            points:
+                assignment.points === undefined || assignment.points === ""
+                    ? "0"
+                    : String(assignment.points),
+            dueDate: assignment.dueDate ?? "",
+            availableFrom: assignment.availableFrom ?? "",
+            availableUntil: assignment.availableUntil ?? "",
         };
 
-        if (isNew) {
-            dispatch(addAssignment(payload));
-        } else {
-            dispatch(updateAssignment({ ...payload, _id: aid }));
+        try {
+            if (isNew) {
+                const created = await assignmentsClient.createAssignmentForCourse(cid, body);
+                dispatch(setAssignments([...assignments, created]));
+            } else if (aid) {
+                const updated = await assignmentsClient.updateAssignment({
+                    ...body,
+                    _id: aid,
+                    course: cid,
+                });
+                dispatch(
+                    setAssignments(
+                        assignments.map((a: any) =>
+                            a._id === updated._id ? updated : a
+                        )
+                    )
+                );
+            }
+            router.push(`/courses/${cid}/assignments`);
+        } catch (e) {
+            console.error(e);
         }
-        router.push(`/courses/${cid}/assignments`);
     };
 
     const onCancel = () => {
