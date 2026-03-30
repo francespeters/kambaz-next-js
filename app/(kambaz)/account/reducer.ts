@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = {
+
+export type CurrentUser = {
+  _id: string;
+  username: string;
+  role: string;
+  [key: string]: unknown;
+};
+
+const initialState: { currentUser: CurrentUser | null } = {
   currentUser: null,
 };
 const accountSlice = createSlice({
