@@ -4,4 +4,3 @@ export default function Courses() {
       <h2>Course 1234</h2>
     </div>
 );}
-//test
