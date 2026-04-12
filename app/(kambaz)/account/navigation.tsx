@@ -14,11 +14,15 @@ export default function AccountNavigation() {
  return (
   <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0 pe-4">
    <Nav variant="pills">
+
      {links.map((link) => (
        <NavItem key={link} className="bg-0">
          <NavLink as={Link} href={link} active={pathname.endsWith(link)} className={pathname.endsWith(link) ? "active wd-account-nav-active border-0" : "border-0 text-danger"}>
            {link} </NavLink> </NavItem>
      ))}
+     {currentUser && currentUser.role === "ADMIN" && (
+       <NavLink as={Link} href={`/account/users`}  active={pathname.endsWith('Users')}> Users </NavLink> )}
+
    </Nav>
    </div>
 
