@@ -26,17 +26,25 @@ export default function Modules() {
             : params.cid?.[0];
     const [moduleName, setModuleName] = useState("");
     const { modules } = useSelector((state: RootState) => state.modulesReducer);
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+
+    const isFaculty = currentUser?.role === "FACULTY";
+
+
     const dispatch = useDispatch();
     const onUpdateModule = async (module: any) => {
-        await client.updateModule(module);
+        if (!cid) return;
+        await client.updateModule(cid, module);
         const newModules = modules.map((m: any) => m._id === module._id ? module : m );
         dispatch(setModules(newModules));
     };
 
-    const onRemoveModule = async (moduleId: string) => {
-    await client.deleteModule(moduleId);
-    dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
-  };
+     const onRemoveModule = async (moduleId: string) => {
+        if (!cid) return;
+        await client.deleteModule(cid, moduleId);
+        dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
+    };
+
 
     const onCreateModuleForCourse = async () => {
         if (!cid) return;
@@ -70,9 +78,10 @@ export default function Modules() {
 
     return (
     <div>
-        <ModulesControls setModuleName={setModuleName} moduleName={moduleName} 
-        addModule={onCreateModuleForCourse}
-         /><br /><br /><br /><br />
+        {isFaculty && (
+        <><ModulesControls setModuleName={setModuleName} moduleName={moduleName}
+                    addModule={onCreateModuleForCourse} /><br /><br /><br /><br /></>
+        )}
 
         <ListGroup className="rounded-0" id="wd-modules">
             {modules
@@ -91,10 +100,12 @@ export default function Modules() {
                             }}
                defaultValue={module.name}/>
       )}
+      {!module.editing && isFaculty && (
                     <ModuleControlButtons moduleId={module._id} 
                     deleteModule={(moduleId) => onRemoveModule(moduleId)}
 
                     editModule={(moduleId) => dispatch(editModule(moduleId))} />
+                    )}
 
                 </div>
                 {module.lessons && (

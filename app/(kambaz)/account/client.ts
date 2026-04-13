@@ -37,8 +37,6 @@ export const createUser = async (user: any) => {
 
 
 
-
-
 export const signin = async (credentials: any) => {
   const response = await axiosWithCredentials.post( `${USERS_API}/signin`, credentials );
   return response.data;

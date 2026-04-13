@@ -84,7 +84,7 @@ export default function Dashboard() {
 
     const handleEnroll = async (courseId: string) => {
         try {
-            await enrollmentsClient.enrollInCourse(courseId);
+            await client.enrollIntoCourse("current", courseId);  // changed
             await loadEnrollments();
             await loadCourses();
         } catch (error) {
@@ -92,9 +92,9 @@ export default function Dashboard() {
         }
     };
 
-    const handleUnenroll = async (courseId: string) => {
+        const handleUnenroll = async (courseId: string) => {
         try {
-            await enrollmentsClient.unenrollFromCourse(courseId);
+            await client.unenrollFromCourse("current", courseId);  // changed
             await loadEnrollments();
             await loadCourses();
         } catch (error) {
