@@ -178,7 +178,10 @@ export default function Dashboard() {
                     <Card>
                     <Link href={`/courses/${course._id}/home`}
                         className="wd-dashboard-course-link text-decoration-none text-dark" >
-                        <CardImg src={course.image} variant="top" width="100%" height={160} />
+                        <div style={{ 
+                        height: 160, 
+                        backgroundColor: `hsl(${course._id.charCodeAt(0) * 37 % 360}, 70%, 60%)` 
+                        }} />
                         <CardBody className="card-body">
                         <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
                         {course.name} </CardTitle>
