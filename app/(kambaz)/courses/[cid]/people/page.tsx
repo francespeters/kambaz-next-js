@@ -1,63 +1,26 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { useState, useEffect } from "react";
-import PeopleDetails from "./Details";
-import Link from "next/link";
-import { Table } from "react-bootstrap";
-import { FaUserCircle } from "react-icons/fa";
-export default function PeopleTable({ users = [], fetchUsers }: { users?: any[]; fetchUsers: () => void; }) {
-    const [showDetails, setShowDetails] = useState(false);
-    const [showUserId, setShowUserId] = useState<string | null>(null);
+import * as client from "../../client";
 
-type User = {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    loginId: string;
-    section: string;
-    role: string;
-    lastActivity: string;
-    totalActivity: string;
-};
-return (
-    <div id="wd-people-table">
-        {showDetails && (
-       <PeopleDetails
-         uid={showUserId}
-         onClose={() => {
-           setShowDetails(false);
-           fetchUsers();
-         }}/>
-     )}    
-        <Table striped>
-            <thead>
-                <tr><th>Name</th><th>Login ID</th><th>Section</th><th>Role</th><th>Last Activity</th><th>Total Activity</th></tr>
-            </thead>
-            <tbody>
-                {users
-                .map((user: User) => (
-                <tr key={user._id}>
-                    <td className="wd-full-name text-nowrap">
-                        <span className="text-decoration-none"
-                            onClick={() => {
-                            setShowDetails(true);
-                            setShowUserId(user._id);
-                         }} >
+import { useParams } from "next/navigation";
+import PeopleTable from "./PeopleTable";
+export default function People() {
+  const { cid } = useParams();
+  const [users, setUsers] = useState([]);
 
-                        <FaUserCircle className="me-2 fs-1 text-secondary" />
-                        <span className="wd-first-name">{user.firstName}</span>
-                        <span className="wd-last-name">{user.lastName}</span>
-                    </span>
+  const fetchUsers = async () => {
+    if (!cid) return;
+    const data = await client.findUsersForCourse(
+      typeof cid === "string" ? cid : cid[0]
+    );
+    setUsers(data);
+  };
 
-                    </td>
-                    <td className="wd-login-id">{user.loginId}</td>
-                    <td className="wd-section">{user.section}</td>
-                    <td className="wd-role">{user.role}</td>
-                    <td className="wd-last-activity">{user.lastActivity}</td>
-                    <td className="wd-total-activity">{user.totalActivity}</td>
-                </tr>
-                ))}
-            </tbody>
+  useEffect(() => {
+    fetchUsers();
+  }, [cid]);
 
-        </Table>
-  </div> );}
+  return <PeopleTable users={users} fetchUsers={fetchUsers} />;
+}

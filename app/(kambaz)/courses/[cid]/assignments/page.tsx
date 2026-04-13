@@ -25,8 +25,13 @@ import { useEffect, useState } from "react";
  */
 export default function Assignments() {
     const { cid } = useParams();
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+
     const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
     const dispatch = useDispatch();
+
+    const isFaculty = currentUser?.role === "FACULTY";
+    
 
     
 
@@ -59,11 +64,11 @@ export default function Assignments() {
     return (
     <div id="wd-assignments">
     <div>
-        <AssignmentSearch />
+        {isFaculty && (
+            <AssignmentSearch />
+        )}
         <div className="wd-title p-3 ps-2 bg-secondary"> <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS 
-        <AssignmentControlButtons 
-          
-        /> 
+        <AssignmentControlButtons /> 
         </div>
 
       <ListGroup className="rounded-0" id="wd-modules">
@@ -71,6 +76,7 @@ export default function Assignments() {
         .map((assignment: Assignment) => (
           <ListGroupItem key={assignment._id} className="wd-lesson d-flex p-3 ps-1 align-items-center">
             
+            {isFaculty && (
             <Link href={`/courses/${cid}/assignments/${assignment._id}`} className="text-decoration-none text-dark">
               <AssignmentStartControls 
               assignmentid={assignment._id}
@@ -78,6 +84,9 @@ export default function Assignments() {
               editAssignment={() => dispatch(editAssignment(assignment._id))}
               />
             </Link>  
+            )}
+           
+
 
             <div className="flex-fill me-3 ps-4">
                     <h5 className="mb-2">
@@ -98,10 +107,13 @@ export default function Assignments() {
                 </p>
             </div>
             
-            <AssignmentSubControls assignmentid={assignment._id} 
-              deleteAssignment={(id) => onRemoveAssignment(id)}
-              editAssignment={() => dispatch(editAssignment(assignment._id))}
-            />
+            {isFaculty && (
+              <AssignmentSubControls assignmentid={assignment._id} 
+                deleteAssignment={(id) => onRemoveAssignment(id)}
+                editAssignment={() => dispatch(editAssignment(assignment._id))}
+              />
+            )}
+
 
           </ListGroupItem>
         ))}

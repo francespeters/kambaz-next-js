@@ -32,3 +32,8 @@ export const updateAssignment = async (assignment: { _id: string } & Record<stri
   );
   return data;
 };
+
+export const findAssignmentById = async (assignmentId: string) => {
+  const { data } = await axios.get(`${ASSIGNMENTS_API}/${assignmentId}`);
+  return data;
+}

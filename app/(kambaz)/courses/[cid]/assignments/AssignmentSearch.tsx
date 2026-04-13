@@ -9,6 +9,7 @@ export default function AssignmentSearch() {
 
     const { cid } = useParams<{ cid: string }>();
     const router = useRouter();
+    
   return (
     <div className="d-flex justify-content-between align-items-center mb-3"> 
         <InputGroup style={{ width: "300px" }}>
