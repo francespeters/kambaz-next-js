@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useParams, useRouter } from "next/navigation";
@@ -24,7 +25,6 @@ export default function QuizEditor() {
   const [activeTab, setActiveTab] = useState<"details" | "questions">("details");
 
   useEffect(() => {
-    // ✅ use Redux if available, otherwise fetch from server
     if (existingQuiz) {
       setQuiz(existingQuiz);
     } else {

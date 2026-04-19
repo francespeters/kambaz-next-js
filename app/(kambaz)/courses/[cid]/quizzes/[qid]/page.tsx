@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useParams, useRouter } from "next/navigation";
@@ -6,6 +7,7 @@ import { RootState } from "../../../../store";
 import Link from "next/link";
 import { BsPencilSquare } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import * as attemptsClient from "../../../attemptsClient";
 
 function formatDate(dateStr: string) {
   if (!dateStr) return "No date set";

@@ -30,5 +30,9 @@ export default function labs() {
         </li>
      </ul>
      <p> Frances Peters (Section 02)</p>
+     <Link href="https://github.com/francespeters/kambaz-next-js" id="wd-lab5-link">
+           Frontend GitHub Repo </Link> <br />
+      <Link href="https://github.com/francespeters/kambaz-node-server-app" id="wd-lab5-link">
+           Backend GitHub Repo </Link>
    </div>
 );}

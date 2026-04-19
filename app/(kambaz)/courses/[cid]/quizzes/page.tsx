@@ -6,12 +6,13 @@ import { BsChevronDown } from "react-icons/bs";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as quizzesClient from "../../quizzesClient";
 import QuizControlButtons from "./QuizControlButtons";
 import QuizContainerHeading from "./QuizContainerHeading";
 import QuizSubControls from "./QuizSubControls";
 import { setQuizzes, deleteQuiz, togglePublishQuiz } from "./reducer";
+import * as attemptsClient from "../../attemptsClient";
 
 type Quiz = {
   _id: string;
@@ -23,6 +24,7 @@ type Quiz = {
   availableUntil: string;
   published: boolean;
   dueDate: string;
+  questions: any[];
 };
 
 export default function Quizzes() {
@@ -34,6 +36,9 @@ export default function Quizzes() {
     const isFaculty = currentUser?.role === "FACULTY";
     const { quizzes } = useSelector((state: RootState) => state.quizzesReducer);
 
+    const [lastAttempts, setLastAttempts] = useState<Record<string, any>>({});
+
+
     const fetchQuizzes = async () => {
         const list = await quizzesClient.findQuizzesForCourse(cid as string);
         dispatch(setQuizzes(list));
@@ -42,6 +47,21 @@ export default function Quizzes() {
     useEffect(() => {
         fetchQuizzes();
     }, [cid]);
+
+    useEffect(() => {
+    if (isFaculty || !currentUser?._id) return;
+    const courseQuizzes = quizzes.filter((q: Quiz) => q.course === cid);
+    courseQuizzes.forEach(async (quiz: Quiz) => {
+      try {
+        const attempt = await attemptsClient.getLatestAttempt(quiz._id, currentUser._id);
+        if (attempt) {
+          setLastAttempts((prev) => ({ ...prev, [quiz._id]: attempt }));
+        }
+      } catch {
+        // no attempt yet for this quiz, that's fine
+      }
+    });
+  }, [quizzes, currentUser, isFaculty]);
 
     const onRemoveQuiz = async (quizId: string) => {
         await quizzesClient.deleteQuiz(quizId);
@@ -54,7 +74,9 @@ export default function Quizzes() {
     dispatch(togglePublishQuiz(quiz._id));             
     };
 
-  const courseQuizzes = quizzes.filter((q: Quiz) => q.course === cid);
+    const courseQuizzes = quizzes.filter((q: Quiz) => 
+        q.course === cid && (isFaculty || q.published)
+    );
 
   return (
     <div id="wd-quizzes">
@@ -76,37 +98,56 @@ export default function Quizzes() {
         </div>
       ) : (
         <ListGroup className="rounded-0" id="wd-quizzes">
-          {courseQuizzes.map((quiz: Quiz) => (
-            <ListGroupItem
-              key={quiz._id}
-              className="wd-lesson d-flex p-3 ps-1 align-items-center"
-            >
-              <div className="flex-fill me-3 ps-4">
-                <h5 className="mb-2" 
-                    style={{ cursor: "pointer",  }}
-                    onClick={() => router.push(
-                    isFaculty
-                        ? `/courses/${cid}/quizzes/${quiz._id}`
-                        : `/courses/${cid}/quizzes/${quiz._id}/take`
-                    )}
+        {courseQuizzes.map((quiz: Quiz) => {
+            const attempt = lastAttempts[quiz._id];
+                return (
+                <ListGroupItem
+                key={quiz._id}
+                className="wd-lesson d-flex p-3 ps-1 align-items-center"
                 >
-                {quiz.title}
-                </h5>
-                <p className="mb-1">
-                  <strong>Not available until </strong>
-                  {new Date(`${quiz.availableFrom}T00:00:00`).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-                <p className="mb-0">
-                  <strong>Due </strong>
-                  {new Date(`${quiz.dueDate}T00:00:00`).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                  })}{" "}
-                  | {quiz.points} pts
-                </p>
+                <div className="flex-fill me-3 ps-4">
+                    <h5 className="mb-2" 
+                        style={{ cursor: "pointer",  }}
+                        onClick={() => router.push(
+                        isFaculty
+                            ? `/courses/${cid}/quizzes/${quiz._id}`
+                            : `/courses/${cid}/quizzes/${quiz._id}`
+                        )}
+                    >
+                    {quiz.title}
+                    </h5>
+                    <p className="mb-1">
+                    <strong>Not available until </strong>
+                    {new Date(`${quiz.availableFrom}T00:00:00`).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                    })}
+                    </p>
+                    <p className="mb-0">
+                    <strong>Due </strong>
+                    {new Date(`${quiz.dueDate}T00:00:00`).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                    })}{" "}
+                    | {quiz.points} pts
+                    | {quiz.questions.length} questions
+
+                    {!isFaculty && attempt && (
+                        <span className="ms-3">
+                            | <strong>Score: </strong>
+                            <span className={
+                            attempt.score / attempt.totalPoints >= 0.7
+                                ? "text-success fw-bold"
+                                : "text-danger fw-bold"
+                            }>
+                            {attempt.score} / {attempt.totalPoints}
+                            </span>
+                        </span>
+                        )}
+                        {!isFaculty && !attempt && (
+                        <span className="ms-3 text-muted">| Not yet taken</span>
+                        )}
+                    </p>
               </div>
 
               {isFaculty && (
@@ -120,7 +161,8 @@ export default function Quizzes() {
                 />
                 )}
             </ListGroupItem>
-          ))}
+          )}
+          )}
         </ListGroup>
       )}
     </div>

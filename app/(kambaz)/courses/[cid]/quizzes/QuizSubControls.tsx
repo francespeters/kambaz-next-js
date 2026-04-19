@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { useState, useRef, useEffect } from "react";

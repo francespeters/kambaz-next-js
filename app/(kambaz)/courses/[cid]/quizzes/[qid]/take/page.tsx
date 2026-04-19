@@ -105,7 +105,7 @@ export default function TakeQuiz() {
     setScore(earned);
     setSubmitted(true);
 
-    // save to DB
+    if (currentUser?._id) {   
     await attemptsClient.submitAttempt({
       quizId: qid as string,
       userId: currentUser._id,
@@ -114,6 +114,7 @@ export default function TakeQuiz() {
       totalPoints,
     });
     setAttemptCount((prev) => prev + 1);
+  }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
