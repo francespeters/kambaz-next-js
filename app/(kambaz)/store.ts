@@ -5,6 +5,7 @@ import accountReducer from "./account/reducer";
 import assignmentsReducer from "./courses/[cid]/assignments/reducer";
 import { assignments } from "./database";
 import enrollmentsReducer from "./courses/enrollments/reducer";
+import quizzesReducer from "./courses/[cid]/quizzes/reducer";
 
 
 const store = configureStore({
@@ -14,6 +15,7 @@ const store = configureStore({
     accountReducer,
     assignmentsReducer, 
     enrollmentsReducer,
+    quizzesReducer,
 
   },
 });

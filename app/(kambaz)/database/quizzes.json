@@ -1,0 +1,221 @@
+[
+  {
+    "_id": "quiz1",
+    "title": "React Basics Quiz",
+    "course": "RS101",
+    "description": "Test your knowledge of React fundamentals including components, hooks, and state management.",
+    "quizType": "Graded Quiz",
+    "points": 30,
+    "assignmentGroup": "Quizzes",
+    "shuffleAnswers": true,
+    "timeLimit": 20,
+    "multipleAttempts": false,
+    "howManyAttempts": 1,
+    "showCorrectAnswers": "after_due",
+    "accessCode": "",
+    "oneQuestionAtATime": true,
+    "webcamRequired": false,
+    "lockQuestionsAfterAnswering": false,
+    "dueDate": "2024-03-15",
+    "availableFrom": "2024-03-10",
+    "availableUntil": "2024-03-15",
+    "published": true,
+    "questions": [
+      {
+        "_id": "q1_1",
+        "type": "multiple_choice",
+        "title": "Which hook is used to manage state in a functional component?",
+        "points": 10,
+        "choices": [
+          { "_id": "c1", "text": "useEffect", "isCorrect": false },
+          { "_id": "c2", "text": "useState", "isCorrect": true },
+          { "_id": "c3", "text": "useContext", "isCorrect": false },
+          { "_id": "c4", "text": "useReducer", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q1_2",
+        "type": "true_false",
+        "title": "React components must always return a single root element.",
+        "points": 10,
+        "correctAnswer": true
+      },
+      {
+        "_id": "q1_3",
+        "type": "fill_in_blank",
+        "title": "The hook used to perform side effects in React is called ___.",
+        "points": 10,
+        "correctAnswers": ["useEffect", "UseEffect"]
+      }
+    ]
+  },
+  {
+    "_id": "quiz2",
+    "title": "JavaScript Fundamentals",
+    "course": "RS101",
+    "description": "Covers ES6+ features including arrow functions, destructuring, promises, and async/await.",
+    "quizType": "Graded Quiz",
+    "points": 40,
+    "assignmentGroup": "Exams",
+    "shuffleAnswers": true,
+    "timeLimit": 30,
+    "multipleAttempts": true,
+    "howManyAttempts": 2,
+    "showCorrectAnswers": "immediately",
+    "accessCode": "",
+    "oneQuestionAtATime": false,
+    "webcamRequired": false,
+    "lockQuestionsAfterAnswering": false,
+    "dueDate": "2024-04-01",
+    "availableFrom": "2024-03-25",
+    "availableUntil": "2024-04-01",
+    "published": true,
+    "questions": [
+      {
+        "_id": "q2_1",
+        "type": "multiple_choice",
+        "title": "Which of the following correctly uses array destructuring?",
+        "points": 10,
+        "choices": [
+          { "_id": "c1", "text": "const {a, b} = [1, 2]", "isCorrect": false },
+          { "_id": "c2", "text": "const [a, b] = [1, 2]", "isCorrect": true },
+          { "_id": "c3", "text": "const (a, b) = [1, 2]", "isCorrect": false },
+          { "_id": "c4", "text": "const a, b = [1, 2]", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q2_2",
+        "type": "true_false",
+        "title": "The 'let' keyword allows you to declare a variable that can be reassigned.",
+        "points": 10,
+        "correctAnswer": true
+      },
+      {
+        "_id": "q2_3",
+        "type": "true_false",
+        "title": "Arrow functions have their own 'this' binding.",
+        "points": 10,
+        "correctAnswer": false
+      },
+      {
+        "_id": "q2_4",
+        "type": "fill_in_blank",
+        "title": "To handle asynchronous code without callbacks or .then(), you use the ___ keyword.",
+        "points": 10,
+        "correctAnswers": ["await", "async/await"]
+      }
+    ]
+  },
+  {
+    "_id": "quiz3",
+    "title": "Git & Version Control",
+    "course": "RS101",
+    "description": "Quiz on Git commands, branching strategies, and collaborative workflows.",
+    "quizType": "Practice Quiz",
+    "points": 20,
+    "assignmentGroup": "Quizzes",
+    "shuffleAnswers": false,
+    "timeLimit": 15,
+    "multipleAttempts": true,
+    "howManyAttempts": 3,
+    "showCorrectAnswers": "immediately",
+    "accessCode": "",
+    "oneQuestionAtATime": true,
+    "webcamRequired": false,
+    "lockQuestionsAfterAnswering": false,
+    "dueDate": "2024-02-28",
+    "availableFrom": "2024-02-01",
+    "availableUntil": "2024-02-28",
+    "published": false,
+    "questions": [
+      {
+        "_id": "q3_1",
+        "type": "multiple_choice",
+        "title": "Which command creates a new branch and switches to it immediately?",
+        "points": 10,
+        "choices": [
+          { "_id": "c1", "text": "git branch new-branch", "isCorrect": false },
+          { "_id": "c2", "text": "git switch new-branch", "isCorrect": false },
+          { "_id": "c3", "text": "git checkout -b new-branch", "isCorrect": true },
+          { "_id": "c4", "text": "git create new-branch", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q3_2",
+        "type": "true_false",
+        "title": "git rebase rewrites commit history.",
+        "points": 10,
+        "correctAnswer": true
+      }
+    ]
+  },
+  {
+    "_id": "quiz4",
+    "title": "Node.js & Express Midterm",
+    "course": "RS101",
+    "description": "Covers REST API design, middleware, routing, and MongoDB integration with Mongoose.",
+    "quizType": "Graded Quiz",
+    "points": 50,
+    "assignmentGroup": "Exams",
+    "shuffleAnswers": true,
+    "timeLimit": 45,
+    "multipleAttempts": false,
+    "howManyAttempts": 1,
+    "showCorrectAnswers": "after_due",
+    "accessCode": "EXAM2024",
+    "oneQuestionAtATime": true,
+    "webcamRequired": true,
+    "lockQuestionsAfterAnswering": true,
+    "dueDate": "2024-04-20",
+    "availableFrom": "2024-04-20",
+    "availableUntil": "2024-04-20",
+    "published": false,
+    "questions": [
+      {
+        "_id": "q4_1",
+        "type": "multiple_choice",
+        "title": "Which HTTP method is conventionally used to update a resource partially?",
+        "points": 10,
+        "choices": [
+          { "_id": "c1", "text": "PUT", "isCorrect": false },
+          { "_id": "c2", "text": "POST", "isCorrect": false },
+          { "_id": "c3", "text": "PATCH", "isCorrect": true },
+          { "_id": "c4", "text": "UPDATE", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q4_2",
+        "type": "true_false",
+        "title": "Express middleware functions must call next() to pass control to the next handler.",
+        "points": 10,
+        "correctAnswer": true
+      },
+      {
+        "_id": "q4_3",
+        "type": "multiple_choice",
+        "title": "Which Mongoose method finds a document by its _id field?",
+        "points": 10,
+        "choices": [
+          { "_id": "c1", "text": "Model.find()", "isCorrect": false },
+          { "_id": "c2", "text": "Model.findOne()", "isCorrect": false },
+          { "_id": "c3", "text": "Model.findById()", "isCorrect": true },
+          { "_id": "c4", "text": "Model.get()", "isCorrect": false }
+        ]
+      },
+      {
+        "_id": "q4_4",
+        "type": "fill_in_blank",
+        "title": "The Express function used to parse incoming JSON request bodies is ___.",
+        "points": 10,
+        "correctAnswers": ["express.json()", "express.json"]
+      },
+      {
+        "_id": "q4_5",
+        "type": "true_false",
+        "title": "MongoDB is a relational database that stores data in tables.",
+        "points": 10,
+        "correctAnswer": false
+      }
+    ]
+  }
+]
